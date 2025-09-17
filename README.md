@@ -1,4 +1,4 @@
-# Personality Predictor (Flask) - 4 types demo
+# Personality Predictor (Flask)
 
 This is a Likert-scale based personality predictor (4 types: Introvert, Extrovert, Thinker, Feeler).
 It includes:
@@ -21,7 +21,3 @@ Quick start:
 4. Run the app:
    python app.py
    Open http://127.0.0.1:5000
-
-Notes:
-- The demo CSV has synthetic data for the four label classes.
-- If you want a pre-trained model included, run the training step and the model files will be created in model/.
