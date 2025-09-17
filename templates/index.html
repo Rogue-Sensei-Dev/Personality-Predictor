@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h3 class="card-title mb-3">Personality Survey</h3>
+    <p class="text-muted">Select the option that best fits your view for each statement.</p>
+    <form method="POST" action="{{ url_for('predict') }}">
+      <div class="row">
+        {% for idx, qtext in questions %}
+        <div class="col-12 mb-3">
+          <label class="form-label"><strong>{{ idx }}.</strong> {{ qtext }}</label>
+          <div class="btn-group" role="group" aria-label="Likert options">
+            <input type="radio" class="btn-check" name="q{{ idx }}" id="q{{ idx }}a" value="4" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="q{{ idx }}a">Agree</label>
+
+            <input type="radio" class="btn-check" name="q{{ idx }}" id="q{{ idx }}b" value="3" autocomplete="off">
+            <label class="btn btn-outline-primary" for="q{{ idx }}b">Somewhat Agree</label>
+
+            <input type="radio" class="btn-check" name="q{{ idx }}" id="q{{ idx }}c" value="2" autocomplete="off">
+            <label class="btn btn-outline-primary" for="q{{ idx }}c">Somewhat Disagree</label>
+
+            <input type="radio" class="btn-check" name="q{{ idx }}" id="q{{ idx }}d" value="1" autocomplete="off">
+            <label class="btn btn-outline-primary" for="q{{ idx }}d">Disagree</label>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="mt-4">
+        <button type="submit" class="btn btn-success btn-lg">Submit & Predict</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-7">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Prediction</h3>
+        <p class="lead">Predicted personality: <span class="badge bg-primary">{{ prediction }}</span></p>
+        <p class="text-muted">Probabilities across all classes:</p>
+        <canvas id="probChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Feature importances (top 8)</h5>
+        <ol>
+          {% for f in feature_info[:8] %}
+          <li>
+            <strong>{{ f.feature }}</strong>
+            <div class="small text-muted">Importance: {{ '%.3f'|format(f.importance) }} • Your answer: {{ f.answer }}</div>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5>Details</h5>
+        <p class="small text-muted">Class probabilities and breakdown.</p>
+        <ul class="list-group mb-3">
+          {% for label, p in label_probs.items() %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ label }}
+            <span class="badge bg-secondary rounded-pill">{{ '%.2f'|format(p*100) }}%</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <a class="btn btn-outline-primary" href="{{ url_for('index') }}">Take the test again</a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Top contributing questions (short)</h6>
+        <ol>
+        {% for f in feature_info[:6] %}
+          <li>{{ f.feature }} — importance {{ '%.3f'|format(f.importance) }}</li>
+        {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const label_probs = {{ label_probs | tojson }};
+  const labels = Object.keys(label_probs);
+  const values = Object.values(label_probs).map(v => Math.round(v * 100));
+  window.onload = function() {
+    const ctx = document.getElementById('probChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Class probability (%)',
+          data: values,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: { beginAtZero: true, max: 100 }
+        }
+      }
+    });
+  };
+</script>
+{% endblock %}
