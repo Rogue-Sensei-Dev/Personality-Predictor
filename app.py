@@ -5,7 +5,7 @@ import os
 import csv
 
 app = Flask(__name__)
-app.secret_key = "replace-with-a-secure-secret"
+app.secret_key = "A-SecreT-KeY"
 
 MODEL_PATH = os.path.join("model", "model.pkl")
 LE_PATH = os.path.join("model", "label_encoder.pkl")
